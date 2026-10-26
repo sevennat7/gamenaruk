@@ -1,0 +1,2038 @@
+/* ==========================================================================
+   เกมผจญภัย “เกาะมหาสมบัติทศนิยม” - Style System
+   ออกแบบด้วยธีมเกาะมหาสมบัติ สีสันสดใส ปรับปรุงสำหรับจอคอมและมือถือ ปุ่มใหญ่ สัมผัสง่าย
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. Root Variables & Tokens (Color Palette, Spacing, Typography)
+   -------------------------------------------------------------------------- */
+:root {
+  /* โทนสีเกาะสมบัติและทะเลสดใส */
+  --color-primary: #0284c7;        /* สีฟ้าน้ำทะเลลึก */
+  --color-primary-dark: #0369a1;
+  --color-primary-light: #e0f2fe;
+  
+  --color-secondary: #0d9488;      /* สีเขียวน้ำทะเล / มรกต */
+  --color-secondary-dark: #0f766e;
+  
+  --color-accent-gold: #f59e0b;    /* สีทองหีบสมบัติ */
+  --color-accent-gold-dark: #d97706;
+  --color-accent-amber: #fbbf24;
+  
+  --color-success: #16a34a;        /* สีเขียวใบไม้ / ผ่านด่าน */
+  --color-success-bg: #dcfce7;
+  --color-warning: #ea580c;        /* สีส้มเตือน / ฝึกใหม่ */
+  --color-warning-bg: #ffedd5;
+  --color-danger: #dc2626;
+  
+  /* สีพื้นหลังและการ์ด */
+  --bg-gradient: linear-gradient(180deg, #38bdf8 0%, #7dd3fc 40%, #bae6fd 70%, #fef3c7 100%);
+  --bg-card: rgba(255, 255, 255, 0.94);
+  --bg-card-solid: #ffffff;
+  --bg-chalkboard: #1e293b;        /* สีกระดานคำนวณตั้งจุด */
+  
+  /* ตัวหนังสือ */
+  --text-main: #0f172a;
+  --text-muted: #475569;
+  --text-light: #ffffff;
+  --text-gold: #b45309;
+
+  /* เส้นขอบและเงา */
+  --border-light: rgba(14, 165, 233, 0.2);
+  --border-card: #cbd5e1;
+  --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 12px rgba(2, 132, 199, 0.12);
+  --shadow-lg: 0 10px 25px -5px rgba(2, 132, 199, 0.2), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+  --shadow-gold: 0 6px 20px rgba(245, 158, 11, 0.35);
+
+  /* รัศมีความโค้งมน */
+  --radius-sm: 10px;
+  --radius-md: 16px;
+  --radius-lg: 24px;
+  --radius-pill: 9999px;
+
+  /* ฟอนต์ */
+  --font-heading: 'Prompt', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-body: 'Sarabun', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+/* --------------------------------------------------------------------------
+   2. Reset & Global Base
+   -------------------------------------------------------------------------- */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html, body {
+  width: 100%;
+  min-height: 100%;
+  font-family: var(--font-body);
+  color: var(--text-main);
+  background: var(--bg-gradient);
+  background-attachment: fixed;
+  overflow-x: hidden;
+  line-height: 1.5;
+  font-size: 16px;
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+  border: none;
+  background: none;
+  outline: none;
+}
+
+input {
+  font-family: inherit;
+  outline: none;
+}
+
+/* --------------------------------------------------------------------------
+   3. Background Animated Scene (เกาะ ทะเล และก้อนเมฆ)
+   -------------------------------------------------------------------------- */
+.bg-island-scene {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.sky-clouds {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 40%;
+}
+
+.cloud {
+  position: absolute;
+  background: rgba(255, 255, 255, 0.65);
+  border-radius: 50px;
+  filter: blur(1px);
+  animation: floatCloud linear infinite;
+}
+
+.cloud::after, .cloud::before {
+  content: '';
+  position: absolute;
+  background: inherit;
+  border-radius: 50%;
+}
+
+.cloud-1 {
+  width: 130px;
+  height: 45px;
+  top: 15%;
+  left: -150px;
+  animation-duration: 45s;
+}
+.cloud-1::before { width: 50px; height: 50px; top: -25px; left: 20px; }
+.cloud-1::after { width: 65px; height: 65px; top: -35px; left: 50px; }
+
+.cloud-2 {
+  width: 180px;
+  height: 60px;
+  top: 30%;
+  left: -200px;
+  animation-duration: 65s;
+  animation-delay: 15s;
+}
+.cloud-2::before { width: 70px; height: 70px; top: -35px; left: 30px; }
+.cloud-2::after { width: 85px; height: 85px; top: -45px; left: 75px; }
+
+.cloud-3 {
+  width: 100px;
+  height: 35px;
+  top: 8%;
+  left: -120px;
+  animation-duration: 55s;
+  animation-delay: 5s;
+}
+.cloud-3::before { width: 40px; height: 40px; top: -20px; left: 15px; }
+.cloud-3::after { width: 50px; height: 50px; top: -25px; left: 40px; }
+
+@keyframes floatCloud {
+  0% { transform: translateX(-10vw); }
+  100% { transform: translateX(110vw); }
+}
+
+.ocean-waves {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 150px;
+  opacity: 0.25;
+}
+
+.wave {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 200%;
+  height: 100%;
+  background: radial-gradient(circle at 50% 100%, #0284c7 20%, transparent 60%);
+  animation: waveMotion 12s ease-in-out infinite alternate;
+}
+
+.wave-2 {
+  opacity: 0.6;
+  animation-duration: 8s;
+  animation-delay: -3s;
+}
+
+@keyframes waveMotion {
+  0% { transform: translateX(0) scaleY(1); }
+  100% { transform: translateX(-25%) scaleY(1.2); }
+}
+
+/* --------------------------------------------------------------------------
+   4. Header & Top Bar Navigation
+   -------------------------------------------------------------------------- */
+.game-header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 20px;
+  background: rgba(255, 255, 255, 0.88);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 2px solid var(--border-light);
+  box-shadow: var(--shadow-sm);
+}
+
+.header-left .brand-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-heading);
+  font-weight: 700;
+  color: var(--color-primary-dark);
+  font-size: 1.15rem;
+  transition: transform 0.2s ease;
+}
+
+.header-left .brand-btn:hover {
+  transform: scale(1.03);
+}
+
+.brand-icon {
+  font-size: 1.6rem;
+}
+
+.header-center {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.player-tag {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--color-primary-light);
+  padding: 4px 12px;
+  border-radius: var(--radius-pill);
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--color-primary-dark);
+  border: 1px solid rgba(2, 132, 199, 0.3);
+}
+
+.player-grade-badge {
+  background: var(--color-primary);
+  color: #fff;
+  padding: 1px 7px;
+  border-radius: var(--radius-pill);
+  font-size: 0.8rem;
+}
+
+.total-score-badge {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  background: #fef3c7;
+  padding: 4px 14px;
+  border-radius: var(--radius-pill);
+  border: 2px solid var(--color-accent-amber);
+  font-family: var(--font-heading);
+  font-weight: 700;
+  color: var(--color-accent-gold-dark);
+}
+
+.total-score-badge .score-text {
+  font-size: 1.15rem;
+}
+
+.total-score-badge .score-max {
+  font-size: 0.85rem;
+  color: #92400e;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.icon-control-btn {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.25rem;
+  border: 2px solid var(--border-light);
+  box-shadow: var(--shadow-sm);
+  transition: all 0.2s ease;
+}
+
+.icon-control-btn:hover {
+  transform: translateY(-2px) scale(1.06);
+  border-color: var(--color-primary);
+  box-shadow: var(--shadow-md);
+}
+
+/* --------------------------------------------------------------------------
+   5. Container & Screen Transitions
+   -------------------------------------------------------------------------- */
+.game-container {
+  position: relative;
+  z-index: 10;
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 24px 16px 60px;
+}
+
+.screen {
+  display: none;
+  opacity: 0;
+  transform: translateY(12px);
+  transition: opacity 0.35s ease, transform 0.35s ease;
+}
+
+.screen.active {
+  display: block;
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.card-shadow {
+  background: var(--bg-card);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 2px solid rgba(255, 255, 255, 0.8);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+}
+
+/* --------------------------------------------------------------------------
+   6. Screen 1: Welcome & Registration
+   -------------------------------------------------------------------------- */
+.welcome-card {
+  padding: 40px 32px;
+  text-align: center;
+  margin: 10px auto;
+  max-width: 680px;
+}
+
+.welcome-badge {
+  display: inline-block;
+  background: #fef08a;
+  color: #854d0e;
+  font-weight: 700;
+  padding: 6px 18px;
+  border-radius: var(--radius-pill);
+  font-size: 0.95rem;
+  margin-bottom: 16px;
+  border: 1px solid #fde047;
+}
+
+.welcome-title {
+  font-family: var(--font-heading);
+  font-size: 2.3rem;
+  font-weight: 800;
+  color: #0369a1;
+  line-height: 1.25;
+  margin-bottom: 14px;
+}
+
+.highlight-text {
+  color: var(--color-accent-gold-dark);
+  text-shadow: 1px 1px 0 #fde68a;
+}
+
+.welcome-desc {
+  font-size: 1.15rem;
+  color: var(--text-muted);
+  max-width: 520px;
+  margin: 0 auto 30px;
+}
+
+.login-form {
+  text-align: left;
+}
+
+.form-group {
+  margin-bottom: 24px;
+}
+
+.form-label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 1.1rem;
+  color: #1e293b;
+  margin-bottom: 8px;
+}
+
+.label-icon {
+  font-size: 1.2rem;
+}
+
+.large-input {
+  width: 100%;
+  padding: 16px 20px;
+  font-size: 1.15rem;
+  border: 2px solid #cbd5e1;
+  border-radius: var(--radius-md);
+  background: #ffffff;
+  color: var(--text-main);
+  transition: all 0.2s ease;
+  font-weight: 500;
+}
+
+.large-input:focus {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 4px rgba(2, 132, 199, 0.2);
+}
+
+.form-hint {
+  font-size: 0.85rem;
+  color: #64748b;
+  margin-top: 6px;
+  font-style: italic;
+}
+
+.grade-selector-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.grade-radio-card {
+  position: relative;
+  cursor: pointer;
+  display: block;
+}
+
+.grade-radio-card input[type="radio"] {
+  position: absolute;
+  opacity: 0;
+}
+
+.radio-card-content {
+  padding: 18px 16px;
+  background: #ffffff;
+  border: 3px solid #e2e8f0;
+  border-radius: var(--radius-md);
+  text-align: center;
+  transition: all 0.25s ease;
+}
+
+.grade-radio-card input[type="radio"]:checked + .radio-card-content {
+  border-color: var(--color-primary);
+  background: #f0f9ff;
+  box-shadow: 0 6px 16px rgba(2, 132, 199, 0.22);
+  transform: translateY(-2px);
+}
+
+.grade-icon {
+  font-size: 2.2rem;
+  margin-bottom: 6px;
+}
+
+.grade-title {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 1.1rem;
+  color: var(--text-main);
+}
+
+.grade-sub {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  margin-top: 4px;
+}
+
+.rules-summary-box {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-left: 5px solid var(--color-accent-gold);
+  border-radius: var(--radius-sm);
+  padding: 16px 18px;
+  margin-bottom: 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.rule-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: 0.95rem;
+  color: #334155;
+}
+
+.rule-item .r-icon {
+  font-size: 1.2rem;
+  line-height: 1.2;
+}
+
+/* --------------------------------------------------------------------------
+   7. Buttons Design System (Large, Tactile, Bouncy)
+   -------------------------------------------------------------------------- */
+.btn-primary {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  padding: 18px 28px;
+  font-family: var(--font-heading);
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #ffffff;
+  background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+  border-radius: var(--radius-pill);
+  box-shadow: var(--shadow-gold);
+  border: 2px solid #fef08a;
+  transition: all 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.btn-primary:hover {
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 0 10px 25px rgba(245, 158, 11, 0.45);
+}
+
+.btn-primary:active {
+  transform: translateY(1px) scale(0.98);
+}
+
+.btn-secondary {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 14px 24px;
+  font-family: var(--font-heading);
+  font-weight: 600;
+  font-size: 1.05rem;
+  color: var(--color-primary-dark);
+  background: #ffffff;
+  border: 2px solid var(--color-primary);
+  border-radius: var(--radius-pill);
+  box-shadow: var(--shadow-sm);
+  transition: all 0.2s ease;
+}
+
+.btn-secondary:hover {
+  background: var(--color-primary-light);
+  transform: translateY(-2px);
+}
+
+.btn-bounce {
+  animation: gentlePulse 2.5s infinite;
+}
+
+@keyframes gentlePulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.025); }
+}
+
+/* --------------------------------------------------------------------------
+   8. Screen 2: Island Map & Stage Selection
+   -------------------------------------------------------------------------- */
+.map-view-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.map-header-card {
+  background: rgba(255, 255, 255, 0.92);
+  padding: 22px 28px;
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-md);
+  border: 1px solid rgba(255, 255, 255, 0.8);
+}
+
+.map-title-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.map-title-row h2 {
+  font-family: var(--font-heading);
+  font-weight: 800;
+  font-size: 1.6rem;
+  color: #0369a1;
+}
+
+.map-summary-badge {
+  background: #e0f2fe;
+  color: #0369a1;
+  font-weight: 700;
+  padding: 6px 14px;
+  border-radius: var(--radius-pill);
+  border: 1px solid #bae6fd;
+}
+
+.map-subtitle {
+  color: var(--text-muted);
+  font-size: 1rem;
+  margin-top: 6px;
+}
+
+.island-map-board {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  padding: 30px 10px;
+}
+
+.map-trail {
+  position: absolute;
+  top: 50%;
+  left: 5%;
+  width: 90%;
+  height: 80px;
+  transform: translateY(-50%);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.trail-svg {
+  width: 100%;
+  height: 100%;
+}
+
+.trail-path {
+  fill: none;
+  stroke: #f59e0b;
+  stroke-width: 4;
+  stroke-dasharray: 8 8;
+  opacity: 0.7;
+}
+
+.stage-station {
+  position: relative;
+  z-index: 2;
+  transition: all 0.3s ease;
+}
+
+.station-island {
+  position: relative;
+  background: #ffffff;
+  border-radius: var(--radius-lg);
+  padding: 26px 18px 22px;
+  text-align: center;
+  border: 3px solid #cbd5e1;
+  box-shadow: var(--shadow-md);
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.3s ease;
+}
+
+.stage-unlocked .station-island:hover {
+  transform: translateY(-6px);
+  box-shadow: var(--shadow-lg);
+}
+
+.stage-station.stage-unlocked .station-island {
+  border-color: #38bdf8;
+  background: linear-gradient(180deg, #ffffff 60%, #f0fdf4 100%);
+}
+
+.stage-station.stage-locked .station-island {
+  opacity: 0.65;
+  filter: grayscale(0.6);
+  background: #f1f5f9;
+}
+
+.stage-station.stage-completed .station-island {
+  border-color: var(--color-success);
+  background: linear-gradient(180deg, #ffffff 60%, #dcfce7 100%);
+}
+
+.island-badge {
+  position: absolute;
+  top: -12px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--color-primary);
+  color: #fff;
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 0.85rem;
+  padding: 3px 14px;
+  border-radius: var(--radius-pill);
+  box-shadow: var(--shadow-sm);
+  white-space: nowrap;
+}
+
+.island-illustration {
+  font-size: 2.8rem;
+  margin: 10px 0;
+  text-shadow: 0 4px 8px rgba(0,0,0,0.08);
+}
+
+.station-title {
+  font-family: var(--font-heading);
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: #1e293b;
+  margin-bottom: 6px;
+}
+
+.station-desc {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  margin-bottom: 16px;
+  flex-grow: 1;
+}
+
+.station-score-badge {
+  font-size: 0.85rem;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: var(--radius-pill);
+  background: #e2e8f0;
+  color: #475569;
+  margin-bottom: 16px;
+  display: inline-block;
+  align-self: center;
+}
+
+.stage-completed .station-score-badge {
+  background: #dcfce7;
+  color: #15803d;
+  border: 1px solid #86efac;
+}
+
+.btn-stage-enter {
+  width: 100%;
+  padding: 12px;
+  border-radius: var(--radius-pill);
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 1rem;
+  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark) 100%);
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  box-shadow: 0 4px 10px rgba(2, 132, 199, 0.3);
+  transition: all 0.2s ease;
+}
+
+.btn-stage-enter:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 14px rgba(2, 132, 199, 0.4);
+}
+
+.btn-stage-enter:disabled {
+  background: #94a3b8;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+.map-footer-guide {
+  background: #fffbeb;
+  border: 1px solid #fde68a;
+  border-radius: var(--radius-md);
+  padding: 14px 20px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 1rem;
+  color: #92400e;
+  font-weight: 500;
+}
+
+.guide-icon {
+  font-size: 1.4rem;
+}
+
+/* --------------------------------------------------------------------------
+   9. Screen 3: Game Arena (Gameplay & Questions)
+   -------------------------------------------------------------------------- */
+.game-arena-container {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.arena-top-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  background: rgba(255, 255, 255, 0.92);
+  padding: 14px 20px;
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+}
+
+.arena-stage-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.stage-pill-icon {
+  font-size: 2rem;
+  background: var(--color-primary-light);
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-sm);
+}
+
+.stage-pill-name {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 1.2rem;
+  color: #0369a1;
+}
+
+.stage-pill-sub {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+.arena-score-display {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.score-pill {
+  background: #fef3c7;
+  border: 2px solid var(--color-accent-amber);
+  padding: 6px 14px;
+  border-radius: var(--radius-pill);
+  font-family: var(--font-heading);
+  font-weight: 700;
+  color: #92400e;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.pill-val {
+  font-size: 1.25rem;
+  color: #b45309;
+}
+
+.pill-max {
+  font-size: 0.9rem;
+  color: #78350f;
+}
+
+.btn-scratchpad-toggle {
+  background: #ffffff;
+  border: 2px solid #cbd5e1;
+  padding: 8px 14px;
+  border-radius: var(--radius-pill);
+  font-family: var(--font-heading);
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: #334155;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.2s ease;
+}
+
+.btn-scratchpad-toggle:hover {
+  background: #f1f5f9;
+  border-color: #94a3b8;
+}
+
+/* แถบความคืบหน้า */
+.progress-section {
+  background: rgba(255, 255, 255, 0.85);
+  padding: 12px 18px;
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+}
+
+.progress-label-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.9rem;
+  margin-bottom: 8px;
+}
+
+.q-number-text {
+  font-weight: 700;
+  color: #0369a1;
+}
+
+.attempt-indicator {
+  font-weight: 600;
+  color: #15803d;
+  background: #dcfce7;
+  padding: 2px 10px;
+  border-radius: var(--radius-pill);
+  font-size: 0.85rem;
+}
+
+.attempt-indicator.attempt-retry {
+  color: #c2410c;
+  background: #ffedd5;
+}
+
+.custom-progress-track {
+  width: 100%;
+  height: 12px;
+  background: #e2e8f0;
+  border-radius: var(--radius-pill);
+  overflow: hidden;
+}
+
+.custom-progress-bar {
+  height: 100%;
+  background: linear-gradient(90deg, #38bdf8, #0284c7);
+  border-radius: var(--radius-pill);
+  transition: width 0.4s ease;
+}
+
+/* กระดาษทดเลข (Scratchpad) */
+.scratchpad-panel {
+  background: #ffffff;
+  border: 2px solid #94a3b8;
+  border-radius: var(--radius-md);
+  padding: 14px;
+  box-shadow: var(--shadow-md);
+}
+
+.scratchpad-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 1rem;
+  color: #334155;
+}
+
+.scratchpad-tools {
+  display: flex;
+  gap: 8px;
+}
+
+.btn-mini {
+  padding: 4px 10px;
+  border-radius: var(--radius-pill);
+  font-size: 0.8rem;
+  font-weight: 600;
+  background: #f1f5f9;
+  border: 1px solid #cbd5e1;
+  color: #475569;
+}
+
+.btn-mini:hover {
+  background: #e2e8f0;
+}
+
+#scratchpadCanvas {
+  width: 100%;
+  height: 200px;
+  background: #fffef0;
+  border: 1px dashed #cbd5e1;
+  border-radius: var(--radius-sm);
+  touch-action: none;
+  cursor: crosshair;
+}
+
+.scratchpad-hint {
+  font-size: 0.8rem;
+  color: #64748b;
+  margin-top: 6px;
+  text-align: right;
+}
+
+/* การ์ดคำถาม */
+.question-card {
+  padding: 28px 24px;
+  min-height: 400px;
+  display: flex;
+  flex-direction: column;
+}
+
+.question-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.q-type-badge {
+  background: #f1f5f9;
+  color: #475569;
+  font-size: 0.85rem;
+  font-weight: 600;
+  padding: 4px 12px;
+  border-radius: var(--radius-pill);
+}
+
+.q-grade-badge {
+  background: var(--color-primary-light);
+  color: var(--color-primary-dark);
+  font-size: 0.85rem;
+  font-weight: 700;
+  padding: 4px 12px;
+  border-radius: var(--radius-pill);
+}
+
+.problem-display {
+  text-align: center;
+  padding: 20px 10px 28px;
+}
+
+.problem-story {
+  font-size: 1.25rem;
+  color: #1e293b;
+  line-height: 1.6;
+  margin-bottom: 16px;
+  padding: 16px 20px;
+  background: #f8fafc;
+  border-radius: var(--radius-md);
+  border-left: 4px solid var(--color-primary);
+  text-align: left;
+}
+
+.math-expression {
+  font-family: var(--font-heading);
+  font-size: 3rem;
+  font-weight: 800;
+  color: #0369a1;
+  letter-spacing: 1px;
+  text-shadow: 1px 2px 4px rgba(2, 132, 199, 0.15);
+}
+
+/* โหมดคำตอบแบบ 4 ช้อยส์ (ปุ่มใหญ่พิเศษ สัมผัสง่าย) */
+.choices-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.choice-btn {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 18px 20px;
+  background: #ffffff;
+  border: 3px solid #cbd5e1;
+  border-radius: var(--radius-md);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.04);
+  font-family: var(--font-heading);
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #1e293b;
+  text-align: left;
+  transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.choice-letter {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  background: #f1f5f9;
+  border-radius: 50%;
+  color: #0284c7;
+  font-size: 1.2rem;
+  font-weight: 800;
+  flex-shrink: 0;
+  transition: all 0.2s ease;
+}
+
+.choice-btn:hover:not(:disabled) {
+  border-color: var(--color-primary);
+  background: #f0f9ff;
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-md);
+}
+
+.choice-btn:hover:not(:disabled) .choice-letter {
+  background: var(--color-primary);
+  color: #ffffff;
+}
+
+.choice-btn.selected-correct {
+  border-color: var(--color-success);
+  background: #dcfce7 !important;
+  color: #15803d;
+}
+
+.choice-btn.selected-wrong {
+  border-color: var(--color-danger);
+  background: #fee2e2 !important;
+  color: #b91c1c;
+}
+
+.choice-btn:disabled {
+  cursor: default;
+}
+
+/* โหมดกรอกคำตอบเอง (Direct Input + On-screen Keypad) */
+.direct-input-section {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  max-width: 480px;
+  margin: 0 auto 20px;
+  width: 100%;
+}
+
+.input-row {
+  display: flex;
+  gap: 12px;
+}
+
+.direct-number-input {
+  flex-grow: 1;
+  padding: 16px 20px;
+  font-family: var(--font-heading);
+  font-size: 1.7rem;
+  font-weight: 700;
+  text-align: center;
+  border: 3px solid #cbd5e1;
+  border-radius: var(--radius-md);
+  background: #ffffff;
+  color: #0369a1;
+  letter-spacing: 1px;
+}
+
+.direct-number-input:focus {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 4px rgba(2, 132, 199, 0.2);
+}
+
+.btn-submit-answer {
+  padding: 0 24px;
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 1.15rem;
+  color: #ffffff;
+  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark) 100%);
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+  box-shadow: var(--shadow-md);
+  transition: all 0.2s ease;
+}
+
+.btn-submit-answer:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
+}
+
+.virtual-keypad {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+  background: #f8fafc;
+  padding: 12px;
+  border-radius: var(--radius-md);
+  border: 1px solid #e2e8f0;
+}
+
+.kp-btn {
+  height: 54px;
+  background: #ffffff;
+  border: 2px solid #cbd5e1;
+  border-radius: var(--radius-sm);
+  font-family: var(--font-heading);
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: #1e293b;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 0 #94a3b8;
+  transition: all 0.1s ease;
+}
+
+.kp-btn:active {
+  transform: translateY(2px);
+  box-shadow: none;
+}
+
+.kp-backspace {
+  background: #fee2e2;
+  border-color: #fca5a5;
+  color: #b91c1c;
+  font-size: 1rem;
+}
+
+.kp-clear {
+  background: #f1f5f9;
+  border-color: #cbd5e1;
+  color: #475569;
+  font-size: 1rem;
+}
+
+.kp-dot {
+  font-size: 2rem;
+  font-weight: 900;
+  color: #0284c7;
+}
+
+.kp-submit {
+  grid-column: span 2;
+  background: var(--color-accent-gold);
+  border-color: #d97706;
+  color: #ffffff;
+  font-size: 1.1rem;
+}
+
+/* กล่องคำใบ้เมื่อผิดครั้งที่ 1 */
+.hint-alert-box {
+  background: #fffbeb;
+  border: 2px solid #fde68a;
+  border-left: 6px solid var(--color-accent-gold);
+  border-radius: var(--radius-md);
+  padding: 18px 20px;
+  margin-top: 10px;
+  animation: fadeIn 0.3s ease;
+}
+
+.hint-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+
+.hint-icon {
+  font-size: 1.4rem;
+}
+
+.hint-title {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 1.1rem;
+  color: #92400e;
+}
+
+.hint-text {
+  font-size: 1.05rem;
+  color: #78350f;
+  margin-bottom: 14px;
+  line-height: 1.5;
+}
+
+.btn-retry-try {
+  padding: 10px 18px;
+  background: #f59e0b;
+  color: #ffffff;
+  border-radius: var(--radius-pill);
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 0.95rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 4px 10px rgba(245, 158, 11, 0.3);
+  transition: all 0.2s ease;
+}
+
+.btn-retry-try:hover {
+  background: #d97706;
+  transform: translateY(-2px);
+}
+
+/* --------------------------------------------------------------------------
+   10. กล่องเฉลยพร้อมวิธีตั้งหลักทศนิยมให้ตรงกัน (Vertical Alignment Chalkboard)
+   -------------------------------------------------------------------------- */
+.explanation-box {
+  background: #f8fafc;
+  border: 2px solid #e2e8f0;
+  border-radius: var(--radius-md);
+  padding: 24px 20px;
+  margin-top: 20px;
+  animation: fadeIn 0.3s ease;
+}
+
+.explanation-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.exp-icon {
+  font-size: 1.6rem;
+}
+
+.exp-title {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 1.25rem;
+  color: #0f172a;
+}
+
+/* กระดานคำนวณแนวตั้ง */
+.vertical-alignment-chalkboard {
+  background: var(--bg-chalkboard);
+  color: #f8fafc;
+  border-radius: var(--radius-md);
+  padding: 24px;
+  margin-bottom: 20px;
+  box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.4);
+}
+
+.chalkboard-title {
+  font-family: var(--font-heading);
+  font-size: 1rem;
+  font-weight: 600;
+  color: #38bdf8;
+  margin-bottom: 16px;
+  border-bottom: 1px solid #334155;
+  padding-bottom: 6px;
+}
+
+.chalk-math-container {
+  display: flex;
+  justify-content: center;
+  margin: 10px 0 20px;
+}
+
+/* ตารางแสดงตัวเลขตั้งหลัก */
+.column-math-table {
+  display: inline-block;
+  font-family: 'Courier New', Courier, monospace, var(--font-heading);
+  font-size: 1.8rem;
+  font-weight: bold;
+  text-align: right;
+  line-height: 1.35;
+  padding: 10px 24px;
+  background: rgba(15, 23, 42, 0.6);
+  border-radius: var(--radius-sm);
+  border: 1px solid #475569;
+}
+
+.math-row {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  position: relative;
+}
+
+.math-cell {
+  display: inline-block;
+  width: 28px;
+  text-align: center;
+}
+
+.math-cell.dot {
+  width: 16px;
+  color: #38bdf8;
+  text-shadow: 0 0 6px rgba(56, 189, 248, 0.6);
+}
+
+.math-cell.padded-zero {
+  color: #fbbf24;
+  position: relative;
+}
+
+.math-cell.padded-zero::after {
+  content: 'เติม 0';
+  position: absolute;
+  top: -16px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 0.55rem;
+  font-family: var(--font-body);
+  color: #fde047;
+  white-space: nowrap;
+}
+
+.math-row.carry-row {
+  color: #f43f5e;
+  font-size: 1rem;
+  min-height: 22px;
+}
+
+.math-row.operator-row .operator-symbol {
+  margin-right: 12px;
+  color: #38bdf8;
+  font-size: 1.6rem;
+}
+
+.math-divider {
+  width: 100%;
+  height: 2px;
+  background: #cbd5e1;
+  margin: 4px 0;
+}
+
+.math-divider.double-line {
+  height: 4px;
+  border-top: 2px solid #38bdf8;
+  border-bottom: 2px solid #38bdf8;
+  background: transparent;
+}
+
+.math-row.result-row {
+  color: #4ade80;
+}
+
+.chalk-rules-guide {
+  font-size: 0.95rem;
+  color: #cbd5e1;
+  line-height: 1.6;
+  border-top: 1px solid #334155;
+  padding-top: 12px;
+}
+
+.chalk-rules-guide ul {
+  padding-left: 20px;
+}
+
+.chalk-rules-guide li {
+  margin-bottom: 4px;
+}
+
+.exp-nav-row {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.btn-next-question {
+  padding: 14px 30px;
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 1.2rem;
+  color: #ffffff;
+  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark) 100%);
+  border-radius: var(--radius-pill);
+  box-shadow: var(--shadow-md);
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.btn-next-question:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
+}
+
+/* --------------------------------------------------------------------------
+   11. Screen 4: Stage Result (Pass / Fail)
+   -------------------------------------------------------------------------- */
+.stage-result-card {
+  padding: 40px 32px;
+  text-align: center;
+  max-width: 620px;
+  margin: 10px auto;
+}
+
+.celebrate-emojis {
+  font-size: 3rem;
+  margin-bottom: 12px;
+}
+
+.result-title {
+  font-family: var(--font-heading);
+  font-weight: 800;
+  font-size: 2rem;
+  margin-bottom: 8px;
+}
+
+.result-title.text-success { color: #15803d; }
+.result-title.text-warning { color: #c2410c; }
+
+.stage-badge-name {
+  display: inline-block;
+  background: #f1f5f9;
+  color: #334155;
+  font-family: var(--font-heading);
+  font-weight: 700;
+  padding: 4px 16px;
+  border-radius: var(--radius-pill);
+  font-size: 1rem;
+  margin-bottom: 18px;
+}
+
+.stars-awarded {
+  font-size: 2.4rem;
+  letter-spacing: 6px;
+  margin-bottom: 16px;
+}
+
+.result-score-box {
+  background: #dcfce7;
+  border: 2px solid #86efac;
+  border-radius: var(--radius-md);
+  padding: 18px;
+  margin-bottom: 20px;
+  display: inline-block;
+  min-width: 220px;
+}
+
+.result-score-box.score-warn {
+  background: #ffedd5;
+  border-color: #fdba74;
+}
+
+.res-score-number {
+  font-family: var(--font-heading);
+  font-size: 2.8rem;
+  font-weight: 800;
+  color: #15803d;
+  line-height: 1;
+}
+
+.score-warn .res-score-number {
+  color: #c2410c;
+}
+
+.res-score-label {
+  font-size: 0.9rem;
+  color: #475569;
+  margin-top: 4px;
+}
+
+.res-desc {
+  font-size: 1.05rem;
+  color: var(--text-muted);
+  margin-bottom: 28px;
+  line-height: 1.6;
+}
+
+.encouragement-box {
+  background: #fffbeb;
+  border: 1px solid #fde68a;
+  border-radius: var(--radius-md);
+  padding: 16px;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-align: left;
+  color: #92400e;
+  font-size: 0.95rem;
+}
+
+.result-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* --------------------------------------------------------------------------
+   12. Screen 5: Final Summary (150 Points & Certificate)
+   -------------------------------------------------------------------------- */
+.summary-card {
+  padding: 40px 32px;
+  text-align: center;
+  margin: 10px auto;
+  max-width: 760px;
+}
+
+.treasure-chest-animation {
+  font-size: 4rem;
+  margin-bottom: 10px;
+  animation: bounceChest 2s infinite ease-in-out;
+}
+
+@keyframes bounceChest {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+.summary-badge {
+  display: inline-block;
+  background: #fef3c7;
+  color: #92400e;
+  font-family: var(--font-heading);
+  font-weight: 700;
+  padding: 6px 18px;
+  border-radius: var(--radius-pill);
+  font-size: 1rem;
+  border: 1px solid #fde68a;
+  margin-bottom: 12px;
+}
+
+.summary-title {
+  font-family: var(--font-heading);
+  font-size: 2.2rem;
+  font-weight: 800;
+  color: #0369a1;
+  margin-bottom: 4px;
+}
+
+.summary-grade-tag {
+  font-size: 1.05rem;
+  color: var(--text-muted);
+  margin-bottom: 24px;
+}
+
+.grand-score-box {
+  background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+  border: 3px solid #f59e0b;
+  border-radius: var(--radius-lg);
+  padding: 24px 20px;
+  margin-bottom: 28px;
+  box-shadow: var(--shadow-gold);
+}
+
+.grand-score-val {
+  font-family: var(--font-heading);
+  font-size: 4rem;
+  font-weight: 900;
+  color: #b45309;
+  line-height: 1;
+}
+
+.grand-score-label {
+  font-family: var(--font-heading);
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: #78350f;
+  margin-top: 4px;
+}
+
+.grand-rank-badge {
+  margin-top: 14px;
+  display: inline-block;
+  background: #ffffff;
+  padding: 6px 18px;
+  border-radius: var(--radius-pill);
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 1.05rem;
+  color: #0369a1;
+  border: 2px solid #38bdf8;
+}
+
+.stages-breakdown-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.breakdown-card {
+  background: #f8fafc;
+  border: 2px solid #e2e8f0;
+  border-radius: var(--radius-md);
+  padding: 16px 12px;
+  text-align: center;
+}
+
+.b-icon {
+  font-size: 1.8rem;
+  margin-bottom: 4px;
+}
+
+.b-title {
+  font-family: var(--font-heading);
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #334155;
+}
+
+.b-score {
+  font-family: var(--font-heading);
+  font-size: 1.3rem;
+  font-weight: 800;
+  color: #0284c7;
+  margin-top: 4px;
+}
+
+.stats-mini-row {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+}
+
+.stat-pill {
+  background: #ffffff;
+  border: 1px solid #cbd5e1;
+  padding: 8px 18px;
+  border-radius: var(--radius-pill);
+  font-size: 0.95rem;
+  color: #475569;
+}
+
+/* หัวข้อที่ควรฝึกเพิ่มเติม */
+.improvement-section {
+  text-align: left;
+  background: #f0fdf4;
+  border: 2px solid #86efac;
+  border-radius: var(--radius-md);
+  padding: 20px;
+  margin-bottom: 24px;
+}
+
+.improve-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-heading);
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #166534;
+  margin-bottom: 12px;
+}
+
+.improve-list {
+  padding-left: 24px;
+  color: #14532d;
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+.improve-list li {
+  margin-bottom: 6px;
+}
+
+/* กล่องสถานะ Google Sheets Sync */
+.db-sync-card {
+  background: #ffffff;
+  border: 2px solid #cbd5e1;
+  border-radius: var(--radius-md);
+  padding: 16px 20px;
+  margin-bottom: 24px;
+  text-align: left;
+}
+
+.db-status-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.db-status-icon {
+  font-size: 1.8rem;
+  flex-shrink: 0;
+}
+
+.db-status-content {
+  flex-grow: 1;
+}
+
+.db-status-title {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 1.05rem;
+  color: #1e293b;
+}
+
+.db-status-sub {
+  font-size: 0.85rem;
+  color: #64748b;
+  margin-top: 2px;
+}
+
+.btn-retry-sync {
+  background: #f59e0b;
+  color: #ffffff;
+  font-family: var(--font-heading);
+  font-weight: 700;
+  padding: 8px 16px;
+  border-radius: var(--radius-pill);
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+}
+
+/* Accordion ดูคำตอบย้อนหลัง */
+.review-answers-section {
+  margin-bottom: 28px;
+  text-align: left;
+}
+
+.btn-toggle-review {
+  width: 100%;
+  padding: 14px 18px;
+  background: #f1f5f9;
+  border: 1px solid #cbd5e1;
+  border-radius: var(--radius-md);
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 1rem;
+  color: #334155;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: background 0.2s ease;
+}
+
+.btn-toggle-review:hover {
+  background: #e2e8f0;
+}
+
+.review-answers-list {
+  background: #ffffff;
+  border: 1px solid #cbd5e1;
+  border-top: none;
+  border-radius: 0 0 var(--radius-md) var(--radius-md);
+  padding: 16px;
+  max-height: 400px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.review-item {
+  border-bottom: 1px solid #e2e8f0;
+  padding-bottom: 10px;
+}
+
+.review-item:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.review-item-header {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.9rem;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.review-question {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 1.1rem;
+  color: #0369a1;
+}
+
+.review-answers-detail {
+  font-size: 0.9rem;
+  color: #475569;
+}
+
+.review-tag-correct {
+  color: #15803d;
+  background: #dcfce7;
+  padding: 2px 8px;
+  border-radius: var(--radius-pill);
+}
+
+.review-tag-retry {
+  color: #c2410c;
+  background: #ffedd5;
+  padding: 2px 8px;
+  border-radius: var(--radius-pill);
+}
+
+.final-actions-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+/* --------------------------------------------------------------------------
+   13. Modals & Popups
+   -------------------------------------------------------------------------- */
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(15, 23, 42, 0.6);
+  backdrop-filter: blur(4px);
+  z-index: 999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.modal-box {
+  max-width: 560px;
+  width: 100%;
+  padding: 28px 24px;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+  border-bottom: 1px solid #e2e8f0;
+  padding-bottom: 10px;
+}
+
+.modal-title {
+  font-family: var(--font-heading);
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: #0369a1;
+}
+
+.modal-close-btn {
+  font-size: 1.2rem;
+  color: #94a3b8;
+  padding: 4px 8px;
+}
+
+.modal-body {
+  font-size: 1rem;
+  color: #334155;
+  line-height: 1.6;
+}
+
+.help-section {
+  margin-bottom: 18px;
+}
+
+.help-section h4 {
+  font-family: var(--font-heading);
+  color: #0284c7;
+  margin-bottom: 8px;
+  font-size: 1.1rem;
+}
+
+.help-section code {
+  background: #f1f5f9;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-family: monospace;
+  color: #b45309;
+}
+
+.modal-footer {
+  margin-top: 20px;
+}
+
+/* --------------------------------------------------------------------------
+   14. Animations
+   -------------------------------------------------------------------------- */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* --------------------------------------------------------------------------
+   15. Responsive Adaptations (Mobile / Tablet / Desktop)
+   -------------------------------------------------------------------------- */
+@media (max-width: 768px) {
+  .welcome-title {
+    font-size: 1.8rem;
+  }
+
+  .island-map-board {
+    grid-template-columns: 1fr;
+    gap: 30px;
+  }
+
+  .map-trail {
+    display: none; /* ซ่อนเส้นทางบนจอเล็ก แล้วเรียงเป็นการ์ดตั้ง */
+  }
+
+  .choices-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .choice-btn {
+    padding: 14px 16px;
+    font-size: 1.3rem;
+  }
+
+  .math-expression {
+    font-size: 2.2rem;
+  }
+
+  .stages-breakdown-grid {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .final-actions-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .grade-selector-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ปรับแต่งสำหรับการพิมพ์ใบบันทึกผล / เกียรติบัตร (Print Style) */
+@media print {
+  body {
+    background: #ffffff !important;
+    color: #000000 !important;
+  }
+
+  .game-header,
+  .bg-island-scene,
+  .final-actions-grid,
+  .btn-toggle-review,
+  .db-sync-card {
+    display: none !important;
+  }
+
+  .summary-card {
+    border: 3px double #0284c7 !important;
+    box-shadow: none !important;
+    max-width: 100% !important;
+    padding: 20px !important;
+  }
+
+  .review-answers-list {
+    display: block !important;
+    max-height: none !important;
+  }
+}

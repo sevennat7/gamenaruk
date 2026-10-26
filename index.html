@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>เกาะมหาสมบัติทศนิยม | ผจญภัยคณิตศาสตร์ ป.4–ป.5</title>
+  <meta name="description" content="เว็บเกมผจญภัยคณิตศาสตร์แสนสนุก ฝึกบวกและลบทศนิยม สำหรับนักเรียนชั้น ป.4 และ ป.5 พร้อมระบบแนะนำการตั้งจุดทศนิยมให้ตรงกัน">
+  <meta name="theme-color" content="#0284c7">
+
+  <!-- Google Fonts: Prompt สำหรับหัวข้อ และ Sarabun สำหรับเนื้อหาอ่านง่าย -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Prompt:ital,wght@0,400;0,600;0,700;0,800;1,400&family=Sarabun:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- ฉากหลังแอนิเมชันเกาะและทะเล -->
+  <div class="bg-island-scene" aria-hidden="true">
+    <div class="sky-clouds">
+      <div class="cloud cloud-1"></div>
+      <div class="cloud cloud-2"></div>
+      <div class="cloud cloud-3"></div>
+    </div>
+    <div class="sun-glow"></div>
+    <div class="ocean-waves">
+      <div class="wave wave-1"></div>
+      <div class="wave wave-2"></div>
+    </div>
+  </div>
+
+  <!-- แถบด้านบนของเกม (Top Bar) -->
+  <header class="game-header" id="mainHeader">
+    <div class="header-left">
+      <button class="brand-btn" id="btnHome" title="กลับหน้าแรก">
+        <span class="brand-icon">🏝️</span>
+        <span class="brand-title">เกาะมหาสมบัติทศนิยม</span>
+      </button>
+    </div>
+    <div class="header-center" id="headerPlayerInfo" style="display: none;">
+      <div class="player-tag">
+        <span class="avatar-icon">🧑‍🌾</span>
+        <span class="player-name-display" id="navPlayerName">นักสำรวจ</span>
+        <span class="player-grade-badge" id="navPlayerGrade">ป.4</span>
+      </div>
+      <div class="total-score-badge">
+        <span class="coin-icon">🪙</span>
+        <span class="score-text" id="navTotalScore">0</span>
+        <span class="score-max">/150</span>
+      </div>
+    </div>
+    <div class="header-right">
+      <button class="icon-control-btn" id="btnToggleSound" title="เปิด/ปิดเสียง" aria-label="เปิด/ปิดเสียง">
+        <span id="soundIcon">🔊</span>
+      </button>
+      <button class="icon-control-btn" id="btnHelp" title="คู่มือการเล่น" aria-label="คู่มือการเล่น">
+        <span>❓</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- พื้นที่หน้าจอหลัก (Screens Container) -->
+  <main class="game-container" id="gameContainer">
+
+    <!-- ============================================== -->
+    <!-- หน้าจอที่ 1: ต้อนรับและลงทะเบียนชื่อเล่น (Welcome) -->
+    <!-- ============================================== -->
+    <section class="screen active" id="screenWelcome">
+      <div class="welcome-card card-shadow">
+        <div class="welcome-badge">🏴‍☠️ การผจญภัยล่าขุมทรัพย์ทางคณิตศาสตร์</div>
+        <h1 class="welcome-title">ยินดีต้อนรับสู่<br><span class="highlight-text">เกาะมหาสมบัติทศนิยม</span></h1>
+        <p class="welcome-desc">
+          ท้าทายความสามารถของนักสำรวจตัวน้อย ฝึกบวกและลบทศนิยม พิชิต 3 ด่านมหัศจรรย์เพื่อเปิดหีบสมบัติทองคำโบราณ!
+        </p>
+
+        <!-- ฟอร์มลงทะเบียน -->
+        <form class="login-form" id="formRegistration" onsubmit="return false;">
+          <div class="form-group">
+            <label for="inputNickname" class="form-label">
+              <span class="label-icon">✏️</span> ชื่อเล่นหรือฉายานักสำรวจ:
+            </label>
+            <input 
+              type="text" 
+              id="inputNickname" 
+              class="large-input" 
+              placeholder="เช่น กัปตันคิด, นารี, โดนัท" 
+              maxlength="20" 
+              required
+              autocomplete="off"
+            >
+            <div class="form-hint">* เพื่อความปลอดภัย ไม่ต้องกรอกชื่อ-นามสกุลจริง</div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">
+              <span class="label-icon">🎒</span> เลือกระดับชั้นของเธอ:
+            </label>
+            <div class="grade-selector-grid">
+              <label class="grade-radio-card" for="gradeP4">
+                <input type="radio" name="gradeSelect" id="gradeP4" value="ป.4" checked>
+                <div class="radio-card-content">
+                  <div class="grade-icon">🌱</div>
+                  <div class="grade-title">ชั้นประถมศึกษาปีที่ 4</div>
+                  <div class="grade-sub">เน้นทศนิยม 1–2 ตำแหน่ง</div>
+                </div>
+              </label>
+
+              <label class="grade-radio-card" for="gradeP5">
+                <input type="radio" name="gradeSelect" id="gradeP5" value="ป.5">
+                <div class="radio-card-content">
+                  <div class="grade-icon">⚡</div>
+                  <div class="grade-title">ชั้นประถมศึกษาปีที่ 5</div>
+                  <div class="grade-sub">เพิ่มความท้าทาย ทศนิยมถึง 3 ตำแหน่ง</div>
+                </div>
+              </label>
+            </div>
+          </div>
+
+          <!-- กล่องสรุปกติกาสำคัญ -->
+          <div class="rules-summary-box">
+            <div class="rule-item">
+              <span class="r-icon">🗺️</span>
+              <span><strong>3 ด่าน ด่านละ 5 ข้อ:</strong> ต้องได้ 30 จาก 50 คะแนน เพื่อผ่านแต่ละด่าน</span>
+            </div>
+            <div class="rule-item">
+              <span class="r-icon">🎯</span>
+              <span><strong>คะแนน:</strong> ตอบถูกครั้งแรกได้ 10 คะแนน ตอบผิดมีคำใบ้ให้ลองใหม่ได้ 5 คะแนน</span>
+            </div>
+            <div class="rule-item">
+              <span class="r-icon">💡</span>
+              <span><strong>เคล็ดลับสุดยอด:</strong> ตั้งจุดทศนิยมให้ตรงกัน และเติม 0 ให้หลักเท่ากัน</span>
+            </div>
+          </div>
+
+          <button type="button" class="btn-primary btn-bounce" id="btnStartGame">
+            <span class="btn-icon">⚓</span> ออกเดินทางสู่เกาะสมบัติ!
+          </button>
+        </form>
+      </div>
+    </section>
+
+    <!-- ============================================== -->
+    <!-- หน้าจอที่ 2: แผนที่เกาะสมบัติ 3 ด่าน (Island Map) -->
+    <!-- ============================================== -->
+    <section class="screen" id="screenMap">
+      <div class="map-view-container">
+        <div class="map-header-card">
+          <div class="map-title-row">
+            <h2>🗺️ แผนที่ผจญภัยเกาะมหาสมบัติ</h2>
+            <div class="map-summary-badge">
+              ความคืบหน้ารวม: <span id="mapProgressCount">0</span>/3 ด่าน
+            </div>
+          </div>
+          <p class="map-subtitle">เลือกด่านที่ต้องการสำรวจ พิชิตคะแนน 30/50 เพื่อปลดล็อกด่านถัดไป!</p>
+        </div>
+
+        <div class="island-map-board">
+          <!-- เส้นทางเดินเรือ/เดินป่า -->
+          <div class="map-trail" aria-hidden="true">
+            <svg class="trail-svg" viewBox="0 0 800 240" preserveAspectRatio="none">
+              <path class="trail-path" d="M 120 120 Q 280 40 400 120 T 680 120" />
+            </svg>
+          </div>
+
+          <!-- การ์ดด่านที่ 1 -->
+          <div class="stage-station stage-unlocked" id="stationStage1">
+            <div class="station-island island-forest">
+              <div class="island-badge">ด่านที่ 1</div>
+              <div class="island-illustration">🌲➕🌲</div>
+              <h3 class="station-title">ป่าบวกเลข</h3>
+              <p class="station-desc">บวกทศนิยม 1–2 ตำแหน่ง</p>
+              <div class="station-score-badge" id="badgeStage1Score">ยังไม่เล่น</div>
+              <button class="btn-stage-enter" id="btnEnterStage1">
+                <span>เริ่มสำรวจ</span> ➔
+              </button>
+            </div>
+          </div>
+
+          <!-- การ์ดด่านที่ 2 -->
+          <div class="stage-station stage-locked" id="stationStage2">
+            <div class="station-island island-cave">
+              <div class="island-badge">ด่านที่ 2</div>
+              <div class="island-illustration">💎➖💎</div>
+              <h3 class="station-title">ถ้ำลบเลข</h3>
+              <p class="station-desc">ลบทศนิยม 1–2 ตำแหน่ง</p>
+              <div class="station-score-badge" id="badgeStage2Score">🔒 ล็อกอยู่</div>
+              <button class="btn-stage-enter" id="btnEnterStage2" disabled>
+                <span>ล็อกอยู่</span> 🔒
+              </button>
+            </div>
+          </div>
+
+          <!-- การ์ดด่านที่ 3 -->
+          <div class="stage-station stage-locked" id="stationStage3">
+            <div class="station-island island-castle">
+              <div class="island-badge">ด่านที่ 3</div>
+              <div class="island-illustration">🏰👑🪙</div>
+              <h3 class="station-title">ปราสาทสมบัติ</h3>
+              <p class="station-desc">บวก-ลบไม่เกิน 3 ตำแหน่ง & โจทย์สถานการณ์</p>
+              <div class="station-score-badge" id="badgeStage3Score">🔒 ล็อกอยู่</div>
+              <button class="btn-stage-enter" id="btnEnterStage3" disabled>
+                <span>ล็อกอยู่</span> 🔒
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- กล่องแนะนำด่านปัจจุบัน -->
+        <div class="map-footer-guide" id="mapFooterGuide">
+          <span class="guide-icon">💡</span>
+          <span id="mapGuideText">เริ่มต้นผจญภัยที่ "ป่าบวกเลข" กันก่อนเลย!</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================== -->
+    <!-- หน้าจอที่ 3: หน้าเล่นเกมของแต่ละด่าน (Game Arena) -->
+    <!-- ============================================== -->
+    <section class="screen" id="screenGame">
+      <div class="game-arena-container">
+        
+        <!-- แถบหัวข้อย่อยและสถานะคำถาม -->
+        <div class="arena-top-bar">
+          <div class="arena-stage-info">
+            <span class="stage-pill-icon" id="gameStageIcon">🌲</span>
+            <div>
+              <div class="stage-pill-name" id="gameStageName">ด่านที่ 1: ป่าบวกเลข</div>
+              <div class="stage-pill-sub" id="gameStageTopic">บวกทศนิยม 1–2 ตำแหน่ง</div>
+            </div>
+          </div>
+
+          <div class="arena-score-display">
+            <div class="score-pill">
+              <span class="pill-label">คะแนนด่านนี้:</span>
+              <span class="pill-val" id="gameStageScore">0</span>
+              <span class="pill-max">/50</span>
+            </div>
+            <button class="btn-scratchpad-toggle" id="btnToggleScratchpad" title="เปิด/ปิดกระดาษทดเลข">
+              <span>✏️</span> กระดาษทด
+            </button>
+          </div>
+        </div>
+
+        <!-- แถบความคืบหน้า 5 ข้อ -->
+        <div class="progress-section">
+          <div class="progress-label-row">
+            <span class="q-number-text" id="gameQuestionNumText">คำถามข้อที่ 1 จาก 5 ข้อ</span>
+            <span class="attempt-indicator" id="gameAttemptBadge">รอบตอบ: ครั้งแรก (10 คะแนน)</span>
+          </div>
+          <div class="custom-progress-track">
+            <div class="custom-progress-bar" id="gameProgressBar" style="width: 20%;"></div>
+          </div>
+        </div>
+
+        <!-- กล่องกระดาษทดเลข (Scratchpad Overlay / Collapsible) -->
+        <div class="scratchpad-panel" id="scratchpadPanel" style="display: none;">
+          <div class="scratchpad-header">
+            <span>📝 กระดาษทดเลขสำหรับนักสำรวจ</span>
+            <div class="scratchpad-tools">
+              <button class="btn-mini" id="btnClearScratchpad">🗑️ ล้างกระดาษ</button>
+              <button class="btn-mini" id="btnCloseScratchpad">✖ ปิด</button>
+            </div>
+          </div>
+          <canvas id="scratchpadCanvas" width="700" height="220"></canvas>
+          <div class="scratchpad-hint">* สามารถใช้นิ้วหรือเมาส์ทดเลข ตั้งหลัก จุดทศนิยม หรือทดเลขได้ตามสบาย</div>
+        </div>
+
+        <!-- การ์ดโจทย์คำถาม -->
+        <div class="question-card card-shadow" id="questionCard">
+          
+          <!-- ป้ายหมวดหมู่โจทย์ -->
+          <div class="question-header-row">
+            <span class="q-type-badge" id="questionTypeBadge">แบบเลือกตอบ 4 ตัวเลือก</span>
+            <span class="q-grade-badge" id="questionGradeBadge">ชั้น ป.4</span>
+          </div>
+
+          <!-- เนื้อหาโจทย์ / โจทย์สถานการณ์ -->
+          <div class="problem-display" id="problemDisplay">
+            <div class="problem-story" id="problemStory" style="display: none;"></div>
+            <div class="math-expression" id="mathExpression">
+              3.5 + 4.25 = ?
+            </div>
+          </div>
+
+          <!-- พื้นที่แสดงคำตอบ: สลับระหว่าง 4 ช้อยส์ หรือ กรอกตัวเลข -->
+          <div class="answer-interaction-area">
+            
+            <!-- โหมด 1: 4 ตัวเลือก -->
+            <div class="choices-grid" id="choicesGrid">
+              <!-- ช้อยส์จะถูก render ผ่าน JS -->
+            </div>
+
+            <!-- โหมด 2: กรอกคำตอบด้วยตัวเอง พร้อมคีย์แพดตัวเลขในตัว -->
+            <div class="direct-input-section" id="directInputSection" style="display: none;">
+              <div class="input-row">
+                <input 
+                  type="text" 
+                  id="userDirectInput" 
+                  class="direct-number-input" 
+                  placeholder="พิมพ์คำตอบทศนิยม เช่น 7.75" 
+                  inputmode="decimal"
+                  autocomplete="off"
+                >
+                <button class="btn-submit-answer" id="btnSubmitDirect">
+                  <span>ตรวจคำตอบ</span> ➔
+                </button>
+              </div>
+
+              <!-- แป้นตัวเลขบนหน้าจอ (Virtual Keypad) รองรับมือถือและคอมพิวเตอร์ -->
+              <div class="virtual-keypad">
+                <button type="button" class="kp-btn" data-val="7">7</button>
+                <button type="button" class="kp-btn" data-val="8">8</button>
+                <button type="button" class="kp-btn" data-val="9">9</button>
+                <button type="button" class="kp-btn kp-backspace" id="btnKpBackspace">⌫ ลบ</button>
+
+                <button type="button" class="kp-btn" data-val="4">4</button>
+                <button type="button" class="kp-btn" data-val="5">5</button>
+                <button type="button" class="kp-btn" data-val="6">6</button>
+                <button type="button" class="kp-btn kp-clear" id="btnKpClear">C ล้าง</button>
+
+                <button type="button" class="kp-btn" data-val="1">1</button>
+                <button type="button" class="kp-btn" data-val="2">2</button>
+                <button type="button" class="kp-btn" data-val="3">3</button>
+                <button type="button" class="kp-btn kp-dot" data-val=".">.</button>
+
+                <button type="button" class="kp-btn kp-zero" data-val="0">0</button>
+                <button type="button" class="kp-btn kp-double-zero" data-val="00">00</button>
+                <button type="button" class="kp-btn kp-submit" id="btnKpSubmit">ยืนยัน</button>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- กล่องคำใบ้เมื่อตอบผิดครั้งที่ 1 -->
+          <div class="hint-alert-box" id="hintAlertBox" style="display: none;">
+            <div class="hint-header">
+              <span class="hint-icon">💡</span>
+              <span class="hint-title">คำใบ้จากผู้เฒ่าเต่าแห่งเกาะสมบัติ:</span>
+            </div>
+            <div class="hint-text" id="hintText">
+              สังเกตตำแหน่งทศนิยมให้ดีนะ! ถ้าหลักไม่เท่ากัน ลองเติม 0 ต่อท้ายดูสิ
+            </div>
+            <div class="hint-action">
+              <button class="btn-retry-try" id="btnRetryQuestion">
+                <span>🔄</span> ลองใหม่อีกครั้ง (มีโอกาสครั้งสุดท้าย ได้ 5 คะแนน)
+              </button>
+            </div>
+          </div>
+
+          <!-- กล่องเฉลยพร้อมวิธีตั้งหลักทศนิยมให้ตรงกัน (Column Alignment) -->
+          <div class="explanation-box" id="explanationBox" style="display: none;">
+            <div class="explanation-header">
+              <span class="exp-icon" id="expResultIcon">✨</span>
+              <span class="exp-title" id="expResultTitle">เฉลยพร้อมวิธีคิดอย่างละเอียด</span>
+            </div>
+
+            <!-- การแสดงวิธีตั้งหลักทศนิยม (กระดานคำนวณตั้งจุดตรงกัน) -->
+            <div class="vertical-alignment-chalkboard">
+              <div class="chalkboard-title">📌 วิธีตั้งหลักทศนิยมให้ตรงกัน</div>
+              <div class="chalk-math-container" id="chalkMathContainer">
+                <!-- Render ตารางหลักเลขและจุดทศนิยมผ่าน JS -->
+              </div>
+              <div class="chalk-rules-guide" id="chalkRulesGuide">
+                <!-- คำอธิบายทีละขั้นตอน -->
+              </div>
+            </div>
+
+            <div class="exp-nav-row">
+              <button class="btn-next-question btn-bounce" id="btnNextQuestion">
+                <span>ข้อถัดไป</span> ➔
+              </button>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ============================================== -->
+    <!-- หน้าจอที่ 4: สรุปผลหลังจบลำดับด่าน (Stage Result) -->
+    <!-- ============================================== -->
+    <section class="screen" id="screenStageResult">
+      <div class="stage-result-card card-shadow">
+        
+        <!-- กรณีผ่านด่าน (>= 30 คะแนน) -->
+        <div class="pass-result-view" id="passResultView" style="display: none;">
+          <div class="celebrate-emojis">🎉 🏆 🌟</div>
+          <h2 class="result-title text-success">ยอดเยี่ยมมาก! ผ่านด่านแล้ว</h2>
+          <div class="stage-badge-name" id="resPassStageName">ด่านที่ 1: ป่าบวกเลข</div>
+          
+          <div class="stars-awarded" id="starsAwarded">
+            ⭐⭐⭐
+          </div>
+
+          <div class="result-score-box">
+            <div class="res-score-number" id="resPassScore">45</div>
+            <div class="res-score-label">จาก 50 คะแนน</div>
+          </div>
+
+          <p class="res-desc" id="resPassMessage">
+            เธอมีความเชี่ยวชาญการบวกทศนิยมยอดเยี่ยมมาก เส้นทางสู่ด่านถัดไปถูกเปิดออกแล้ว!
+          </p>
+
+          <div class="result-actions">
+            <button class="btn-primary btn-bounce" id="btnContinueNextStage">
+              <span>🗺️</span> ไปยังด่านถัดไป!
+            </button>
+            <button class="btn-secondary" id="btnBackToMapFromPass">
+              <span>📍</span> ดูแผนที่เกาะ
+            </button>
+          </div>
+        </div>
+
+        <!-- กรณีไม่ผ่านด่าน (< 30 คะแนน) -->
+        <div class="fail-result-view" id="failResultView" style="display: none;">
+          <div class="celebrate-emojis">💪 🛡️ 🧭</div>
+          <h2 class="result-title text-warning">เกือบผ่านแล้ว! พยายามอีกนิดนะ</h2>
+          <div class="stage-badge-name" id="resFailStageName">ด่านที่ 1: ป่าบวกเลข</div>
+
+          <div class="result-score-box score-warn">
+            <div class="res-score-number" id="resFailScore">20</div>
+            <div class="res-score-label">จาก 50 คะแนน (ต้องการ 30 คะแนนขึ้นไป)</div>
+          </div>
+
+          <div class="encouragement-box">
+            <span class="enc-icon">💡</span>
+            <div class="enc-text">
+              <strong>เคล็ดลับจากกัปตัน:</strong> อย่าเพิ่งท้อถอยนะ! ทบทวนการตั้งจุดทศนิยมให้ตรงกัน เติม 0 ในหลักที่แหว่ง แล้วคำนวณทีละหลักอย่างรอบคอบ
+            </div>
+          </div>
+
+          <p class="res-desc">
+            เราจะสุ่มโจทย์ชุดใหม่ 5 ข้อให้เธอได้ฝึกฝนอีกครั้ง คะแนนจะไม่สะสมจากการเล่นซ้ำ แต่จะนับรอบที่ผ่านได้สำเร็จ!
+          </p>
+
+          <div class="result-actions">
+            <button class="btn-primary btn-bounce" id="btnReplayStage">
+              <span>🔄</span> ท้าทายด่านนี้อีกครั้ง (โจทย์ชุดใหม่)
+            </button>
+            <button class="btn-secondary" id="btnBackToMapFromFail">
+              <span>📍</span> กลับไปหน้าแผนที่
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ============================================== -->
+    <!-- หน้าจอที่ 5: มหาสมบัติสำเร็จ จบเกม 150 คะแนน (Final Summary) -->
+    <!-- ============================================== -->
+    <section class="screen" id="screenSummary">
+      <div class="summary-card card-shadow" id="printableSummary">
+        
+        <div class="treasure-chest-animation">
+          <div class="chest-icon">💎👑🪙</div>
+        </div>
+
+        <div class="summary-badge">👑 ผู้พิชิตเกาะมหาสมบัติทศนิยม 👑</div>
+        <h2 class="summary-title">ยินดีด้วยอย่างยิ่ง! กัปตัน <span class="highlight-text" id="sumPlayerName">นักสำรวจ</span></h2>
+        <div class="summary-grade-tag" id="sumPlayerGrade">ชั้นประถมศึกษาปีที่ 4</div>
+
+        <!-- กล่องคะแนนรวมใหญ่ 150 คะแนน -->
+        <div class="grand-score-box">
+          <div class="grand-score-val" id="sumTotalScore">140</div>
+          <div class="grand-score-label">คะแนนรวมทั้งหมด / 150 คะแนน</div>
+          <div class="grand-rank-badge" id="sumRankTitle">🏆 จอมราชันย์แห่งทศนิยม (ระดับยอดเยี่ยม)</div>
+        </div>
+
+        <!-- รายละเอียดคะแนนแต่ละด่าน -->
+        <div class="stages-breakdown-grid">
+          <div class="breakdown-card">
+            <div class="b-icon">🌲</div>
+            <div class="b-title">ด่าน 1: ป่าบวกเลข</div>
+            <div class="b-score" id="sumStage1Score">50 / 50</div>
+          </div>
+          <div class="breakdown-card">
+            <div class="b-icon">💎</div>
+            <div class="b-title">ด่าน 2: ถ้ำลบเลข</div>
+            <div class="b-score" id="sumStage2Score">45 / 50</div>
+          </div>
+          <div class="breakdown-card">
+            <div class="b-icon">🏰</div>
+            <div class="b-title">ด่าน 3: ปราสาทสมบัติ</div>
+            <div class="b-score" id="sumStage3Score">45 / 50</div>
+          </div>
+        </div>
+
+        <!-- สถิติการตอบ -->
+        <div class="stats-mini-row">
+          <div class="stat-pill">
+            <span class="s-icon">🎯</span> ถูกครั้งแรก: <strong id="sumFirstTryCount">13</strong> / 15 ข้อ
+          </div>
+          <div class="stat-pill">
+            <span class="s-icon">💡</span> ถูกหลังได้คำใบ้: <strong id="sumSecondTryCount">2</strong> / 15 ข้อ
+          </div>
+        </div>
+
+        <!-- หัวข้อที่ควรฝึกเพิ่มเติม (Diagnostic Feedback) -->
+        <div class="improvement-section">
+          <h3 class="improve-title">
+            <span>🎯</span> คำแนะนำ & หัวข้อที่ควรฝึกเพิ่มเติม:
+          </h3>
+          <ul class="improve-list" id="sumImproveList">
+            <!-- Render หัวข้อที่ควรปรับปรุงผ่าน JS วิเคราะห์ตามข้อที่ตอบผิด -->
+          </ul>
+        </div>
+
+        <!-- กล่องสถานะการบันทึกฐานข้อมูล Google Sheets -->
+        <div class="db-sync-card" id="dbSyncCard">
+          <div class="db-status-row">
+            <span class="db-status-icon" id="dbStatusIcon">⏳</span>
+            <div class="db-status-content">
+              <div class="db-status-title" id="dbStatusTitle">กำลังเชื่อมต่อฐานข้อมูล Google Sheets...</div>
+              <div class="db-status-sub" id="dbStatusSub">ระบบกำลังส่งผลคะแนนเพื่อบันทึกลงในระบบสารสนเทศ</div>
+            </div>
+            <button class="btn-retry-sync" id="btnRetrySync" style="display: none;">
+              <span>🔄</span> ส่งข้อมูลใหม่
+            </button>
+          </div>
+        </div>
+
+        <!-- รายการเฉลยย้อนหลังทุกข้อ (Accordion Review) -->
+        <div class="review-answers-section">
+          <button class="btn-toggle-review" id="btnToggleReview">
+            <span>📖</span> ดูบันทึกคำตอบและวิธีคิดย้อนหลังทุกข้อ <span>▼</span>
+          </button>
+          <div class="review-answers-list" id="reviewAnswersList" style="display: none;">
+            <!-- Render รายการคำตอบ 15 ข้อผ่าน JS -->
+          </div>
+        </div>
+
+        <!-- ปุ่มจัดการตอนจบ -->
+        <div class="final-actions-grid">
+          <button class="btn-primary" id="btnPlayAgain">
+            <span>🔄</span> เล่นรอบใหม่ (สุ่มโจทย์ใหม่)
+          </button>
+          <button class="btn-secondary" id="btnPrintCert">
+            <span>🖨️</span> พิมพ์ใบบันทึกผลคะแนน
+          </button>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- โมดอลแนะนำการเล่น (How to Play Modal) -->
+  <div class="modal-backdrop" id="modalHelp" style="display: none;">
+    <div class="modal-box card-shadow">
+      <div class="modal-header">
+        <h3 class="modal-title">📖 คู่มือนักสำรวจเกาะมหาสมบัติทศนิยม</h3>
+        <button class="modal-close-btn" id="btnCloseHelp">✖</button>
+      </div>
+      <div class="modal-body">
+        <div class="help-section">
+          <h4>🌟 กฎกติกาและคะแนน</h4>
+          <p>• <strong>3 ด่าน ด่านละ 5 ข้อ:</strong> ป่าบวกเลข, ถ้ำลบเลข และปราสาทสมบัติ</p>
+          <p>• <strong>ตอบถูกครั้งแรก:</strong> ได้รับ <strong>10 คะแนน</strong></p>
+          <p>• <strong>ตอบผิดครั้งแรก:</strong> มีคำใบ้ช่วยเหลือ และมีโอกาสตอบใหม่อีก 1 ครั้ง หากตอบถูกได้รับ <strong>5 คะแนน</strong></p>
+          <p>• <strong>เกณฑ์ผ่านด่าน:</strong> ต้องได้คะแนนอย่างน้อย <strong>30 จาก 50 คะแนน</strong> หากไม่ผ่านจะได้ฝึกใหม่ด้วยโจทย์ชุดใหม่ โดยไม่สะสมคะแนนจากการเล่นซ้ำ</p>
+        </div>
+        <div class="help-section">
+          <h4>🎯 สุดยอดเคล็ดลับการคำนวณทศนิยม</h4>
+          <p>1. <strong>ตั้งจุดให้ตรงกัน:</strong> เขียนตัวตั้งและตัวบวก/ลบให้จุดทศนิยมตรงกันในแนวดิ่งเสมอ</p>
+          <p>2. <strong>เติม 0 ท้ายทศนิยม:</strong> เช่น <code>3.5</code> ให้เติมเป็น <code>3.50</code> เพื่อให้จำนวนตำแหน่งเท่ากัน จะช่วยให้มองหลักง่ายขึ้นมาก</p>
+          <p>3. <strong>คำนวณจากขวาไปซ้าย:</strong> บวกหรือลบเหมือนจำนวนนับทั่วไป หากมีทดหรือยืมให้ทำตามขั้นตอนปกติ</p>
+          <p>4. <strong>ดึงจุดลงมา:</strong> วางจุดทศนิยมของผลลัพธ์ให้ตรงกับจุดของตัวตั้งเสมอ</p>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-primary" id="btnDismissHelp">เข้าใจแล้ว ออกสำรวจกันเลย!</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- โหลดสคริปต์ควบคุมเกม -->
+  <script src="script.js"></script>
+</body>
+</html>
